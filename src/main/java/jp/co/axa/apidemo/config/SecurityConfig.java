@@ -19,7 +19,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         UserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
         userDetailsManager.createUser(User.withDefaultPasswordEncoder()
-                .username("admin").password("password").roles("ADMIN").build());
+                .username("admin").password("password").roles("ADMIN").build());// better to store users in database
         userDetailsManager.createUser(User.withDefaultPasswordEncoder()
                 .username("user").password("password").roles("USER").build());
         return userDetailsManager;
@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .formLogin()
                 .and()
                 .httpBasic()
-                .and().csrf().disable();
+                .and().csrf().disable(); // Since it's RestApi disabled scrf
         return http.build();
     }
 }

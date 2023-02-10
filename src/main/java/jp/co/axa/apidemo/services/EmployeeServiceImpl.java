@@ -3,13 +3,17 @@ package jp.co.axa.apidemo.services;
 import jp.co.axa.apidemo.entities.Employee;
 import jp.co.axa.apidemo.repositories.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@CacheConfig(cacheNames = "employee-cache")
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService{
 
@@ -19,14 +23,17 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeRepository.findAll();
     }
 
+    @Cacheable(key = "'Employee' + #employeeId", unless = "#result == null")
     public Optional<Employee> getEmployee(Long employeeId) {
         return employeeRepository.findById(employeeId);
     }
 
-    public void saveEmployee(Employee employee){
-        employeeRepository.save(employee);
+    @CachePut(key = "'Employee' + #result.id")
+    public Employee saveEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
+    @CacheEvict(key = "'Employee' + #employeeId")
     public void deleteEmployee(Long employeeId){
         employeeRepository.deleteById(employeeId);
     }

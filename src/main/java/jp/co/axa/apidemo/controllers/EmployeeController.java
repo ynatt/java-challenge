@@ -27,8 +27,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public void save(@RequestBody Employee employee){
-        employeeService.saveEmployee(employee);
+    public ResponseEntity<Employee> save(@RequestBody Employee employee){
+        return ResponseEntity.of(Optional.of(employeeService.saveEmployee(employee)));
     }
 
     @DeleteMapping("/{id}")
