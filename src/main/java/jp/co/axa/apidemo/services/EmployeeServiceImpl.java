@@ -1,6 +1,7 @@
 package jp.co.axa.apidemo.services;
 
 import jp.co.axa.apidemo.entities.Employee;
+import jp.co.axa.apidemo.exceptions.EmployeeNotFoundException;
 import jp.co.axa.apidemo.repositories.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
@@ -38,7 +39,9 @@ public class EmployeeServiceImpl implements EmployeeService{
         employeeRepository.deleteById(employeeId);
     }
 
-    public void updateEmployee(Employee employee) {
-        employeeRepository.save(employee);
+    @CachePut(key = "'Employee' + #result.id")
+    public Employee updateEmployee(Employee employee) throws EmployeeNotFoundException {
+        employeeRepository.findById(employee.getId()).orElseThrow(() -> new EmployeeNotFoundException(employee.getId()));
+        return employeeRepository.save(employee);
     }
 }

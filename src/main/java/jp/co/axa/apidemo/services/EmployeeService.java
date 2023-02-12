@@ -1,6 +1,7 @@
 package jp.co.axa.apidemo.services;
 
 import jp.co.axa.apidemo.entities.Employee;
+import jp.co.axa.apidemo.exceptions.EmployeeNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,5 +16,5 @@ public interface EmployeeService {
 
     void deleteEmployee(Long employeeId);
 
-    void updateEmployee(Employee employee);
+    Employee updateEmployee(Employee employee) throws EmployeeNotFoundException;
 }

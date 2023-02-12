@@ -24,7 +24,7 @@ public class ProjectControllerImpl implements ProjectController{
     }
 
     @Override
-    public void assignEmployee(Long projectId, Long employeeId) throws Exception{
-        projectService.assignEmployee(projectId, employeeId);
+    public Project assignEmployee(Long projectId, Long employeeId) throws Exception{
+        return projectService.assignEmployee(projectId, employeeId);
     }
 }

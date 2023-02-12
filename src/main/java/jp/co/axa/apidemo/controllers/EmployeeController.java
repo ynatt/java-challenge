@@ -1,13 +1,14 @@
 package jp.co.axa.apidemo.controllers;
 
 import jp.co.axa.apidemo.entities.Employee;
+import jp.co.axa.apidemo.exceptions.EmployeeNotFoundException;
 import jp.co.axa.apidemo.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,21 +28,21 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> save(@RequestBody Employee employee){
-        return ResponseEntity.of(Optional.of(employeeService.saveEmployee(employee)));
+    @ResponseStatus(HttpStatus.CREATED)
+    public Employee save(@RequestBody Employee employee){
+        return employeeService.saveEmployee(employee);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable Long id){
         employeeService.deleteEmployee(id);
     }
 
     @PutMapping
-    public void update(@RequestBody Employee employee) {
-        Optional<Employee> originalEmployee = employeeService.getEmployee(employee.getId());
-        if(originalEmployee.isPresent()){
-            employeeService.updateEmployee(employee);
-        }
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Employee update(@RequestBody Employee employee) throws EmployeeNotFoundException {
+        return employeeService.updateEmployee(employee);
     }
 
 }

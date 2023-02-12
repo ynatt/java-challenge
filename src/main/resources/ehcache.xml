@@ -1,0 +1,4 @@
+<ehcache>
+    <cache name="employee-cache" maxBytesLocalHeap="50m"
+        timeToLiveSeconds="20"/>
+</ehcache>

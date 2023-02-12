@@ -2,6 +2,7 @@ package jp.co.axa.apidemo.controllers;
 
 
 import jp.co.axa.apidemo.entities.Project;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +15,10 @@ public interface ProjectController {
     List<Project> getAll();
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     Project save(@RequestBody Project project);
 
     @PostMapping("/{projectId}/assign/{employeeId}")
-    void assignEmployee(@PathVariable Long projectId, @PathVariable Long employeeId) throws Exception;
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    Project assignEmployee(@PathVariable Long projectId, @PathVariable Long employeeId) throws Exception;
 }
